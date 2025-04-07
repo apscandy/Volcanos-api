@@ -7,7 +7,7 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 public class ApiServerApplication {
 
 	public static void main(String[] args) {
-		User user = new User.Builder().setUsername("admin").setPassword("admin").build();
+		User user = User.builder().setUsername("adw").setPassword("ad").build();
 
 		SpringApplication.run(ApiServerApplication.class, args);
 	}

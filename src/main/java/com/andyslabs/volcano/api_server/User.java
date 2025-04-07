@@ -9,32 +9,39 @@ public class User {
         this.password = builder.password;
     }
 
-    public String getUsername() {
-        return username;
+    public static UserNameSetter builder(){
+        return new Builder();
     }
 
-    public String getPassword() {
-        return password;
+    public interface UserNameSetter{
+        PasswordSetter setUsername(String username);
     }
 
-    public static class Builder {
+    public interface PasswordSetter {
+        User build();
+        PasswordSetter setPassword(String password); // Optional fix: could be User.Builder
+    }
+
+    private static class Builder implements UserNameSetter, PasswordSetter{
         private String username;
         private String password;
 
+        @Override
         public Builder setUsername(String username) {
             this.username = username;
             return this;
         }
+
+        @Override
         public Builder setPassword(String password) {
             this.password = password;
             return this;
         }
 
+        @Override
         public User build() {
-            if (username == null || password == null) {
-                throw new IllegalArgumentException("Username and password are required");
-            }
             return new User(this);
         }
     }
+
 }
