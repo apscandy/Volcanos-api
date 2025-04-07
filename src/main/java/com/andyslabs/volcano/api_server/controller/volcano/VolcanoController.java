@@ -3,15 +3,15 @@ package com.andyslabs.volcano.api_server.controller.volcano;
 import com.andyslabs.volcano.api_server.controller.ErrorResponse;
 import com.andyslabs.volcano.api_server.model.volcano.data.Volcano;
 import com.andyslabs.volcano.api_server.model.volcano.data.VolcanoPopulationData;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.server.ResponseStatusException;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 @RestController
 public class VolcanoController {
@@ -43,13 +43,12 @@ public class VolcanoController {
     }
 
     @GetMapping("/volcanoes")
-    public ResponseEntity<List<Volcano>> getVolcanoes() {
-        boolean error = true;
-        if (!error) {
-            ErrorResponse errorResponse = new ErrorResponse(400, "Invalid query parameters. Query parameters are not permitted.");
+    public ResponseEntity<List<Volcano>> getVolcanoes(@RequestParam Map<String, String> params, @RequestHeader HttpHeaders headers) {
+        if (!params.containsKey("country") || params.get("country").isEmpty()) {
+            ErrorResponse errorResponse = new ErrorResponse(400, "Country is a required query parameter.");
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST,errorResponse.getMessage());
         }
-
+        String country = params.get("country");
         List<Volcano> list = new ArrayList<Volcano>();
         list.add(new Volcano());
         list.add(new Volcano());
