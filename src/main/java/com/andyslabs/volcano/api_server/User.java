@@ -3,10 +3,12 @@ package com.andyslabs.volcano.api_server;
 public class User {
     private String username;
     private String password;
+    private int id;
 
     private User(Builder builder) {
         this.username = builder.username;
         this.password = builder.password;
+        this.id = builder.id;
     }
 
     public static UserNameSetter builder(){
@@ -18,13 +20,19 @@ public class User {
     }
 
     public interface PasswordSetter {
-        User build();
-        PasswordSetter setPassword(String password); // Optional fix: could be User.Builder
+
+        OptionalSetID setPassword(String password); // Optional fix: could be User.Builder
     }
 
-    private static class Builder implements UserNameSetter, PasswordSetter{
+    public interface OptionalSetID{
+        OptionalSetID setID(int id);
+        User build();
+    }
+
+    private static class Builder implements UserNameSetter, PasswordSetter, OptionalSetID{
         private String username;
         private String password;
+        private int id;
 
         @Override
         public Builder setUsername(String username) {
@@ -35,6 +43,12 @@ public class User {
         @Override
         public Builder setPassword(String password) {
             this.password = password;
+            return this;
+        }
+
+        @Override
+        public Builder setID(int id){
+            this.id = id;
             return this;
         }
 
